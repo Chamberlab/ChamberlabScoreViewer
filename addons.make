@@ -1,0 +1,2 @@
+ofxGiantImage
+ofxOsc
