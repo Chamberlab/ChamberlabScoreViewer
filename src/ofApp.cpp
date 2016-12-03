@@ -11,8 +11,8 @@ void ofApp::setup(){
     showInfo = false;
     showMetrum = true;
 
-    tempo = 120;
-    pixelsPerSecond = 20.0;
+    tempo = __APP_DEFAULT_BPM;
+    pixelsPerSecond = __APP_DEFAULT_PPS;
 
     input.setup(__OSC_PORT_OUTPUT);
     output.setup(__OSC_IP_INPUT, __OSC_PORT_INPUT);
@@ -24,7 +24,10 @@ void ofApp::update(){
         ofxOscMessage msg;
         input.getNextMessage(msg);
 
-        connected = true;
+        uint64_t now_micros = ofGetElapsedTimeMicros();
+        uint64_t diff_micros = now_micros - clock_micros_ref;
+        clock_micros += diff_micros;
+        clock_micros_ref = now_micros;
 
         if (msg.getAddress() == __OSC_ADDR_CONNECT) {
             connected = true;
@@ -38,9 +41,14 @@ void ofApp::update(){
             playing = false;
         } else if (msg.getAddress() == __OSC_ADDR_TIME) {
             time = msg.getArgAsFloat(0);
+            if (time * 1000000.f > clock_micros) {
+                clock_micros = (uint64_t) (time * 1000000.f);
+                clock_micros_ref = ofGetElapsedTimeMicros();
+            }
         } else if (msg.getAddress() == __OSC_ADDR_TEMPO) {
             tempo = msg.getArgAsFloat(0);
         } else {
+            connected = false;
             ofLogNotice() << "Unknown OSC command: " << msg.getAddress();
         }
     }
@@ -48,14 +56,14 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    float minutes = time / tempo;
+    float minutes = (clock_micros * 0.000001f) / tempo;
 
     if (loaded) {
         ofPushStyle();
 
         ofSetColor(255, 255, 255, 255);
-        int buffer = 250;
-        score.draw((int) roundf(pixelsPerSecond * minutes * 60.f), 0, ofGetWidth(), score.height);
+        uint32_t buffer = (uint32_t)roundf(ofGetWidth() * 0.3f);
+        score.draw((uint32_t) roundf(pixelsPerSecond * minutes * 60.f), 0, ofGetWidth(), score.height);
 
         ofSetColor(255, 0, 0);
         ofDrawRectangle(buffer, 0, 5, ofGetHeight());
@@ -92,11 +100,11 @@ void ofApp::draw(){
         ofSetColor(0, 0, 0, 128);
         ofDrawRectangle(ofGetWidth() - 210, ofGetHeight() - 70, 170, 40);
 
-        ofSetColor(255, 255 - (int)((time_beats / 4.0f) * 255.0f));
+        ofSetColor(255, 255 - (uint8_t)((time_beats / 4.0f) * 255.0f));
         ofDrawRectangle(ofGetWidth() - 200, ofGetHeight() - 60, 20, 20);
         ofDrawRectangle(ofGetWidth() - 200 + 30 + 30 * time_beats, ofGetHeight() - 60, 20, 5);
 
-        ofSetColor(255, 255 - (int)((time_sub_beats / 4.0f) * 255.0f));
+        ofSetColor(255, 255 - (uint8_t)((time_sub_beats / 4.0f) * 255.0f));
         ofDrawRectangle(ofGetWidth() - 200 + 30 + 20 * time_sub_beats, ofGetHeight() - 45, 10, 5);
 
         ofPopStyle();

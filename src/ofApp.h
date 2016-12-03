@@ -6,6 +6,8 @@
 
 #define __APP_VERSION__ "0.1.0"
 #define __APP_DEFAULT_FILENAME "score.jpg"
+#define __APP_DEFAULT_BPM 120
+#define __APP_DEFAULT_PPS 100
 
 #define __OSC_IP_INPUT "127.0.0.1"
 #define __OSC_PORT_INPUT 4000
@@ -30,15 +32,17 @@ public:
 
     ofxOscReceiver input;
     ofxOscSender output;
-
     ofxGiantImage score;
 
     float tempo;
     float time;
     float pixelsPerSecond;
 
-    int time_beats;
-    int time_sub_beats;
+    uint64_t clock_micros;
+    uint64_t clock_micros_ref;
+
+    int32_t time_beats;
+    int32_t time_sub_beats;
 
     bool connected;
     bool playing;
