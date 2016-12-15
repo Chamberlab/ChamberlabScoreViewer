@@ -9,7 +9,7 @@ void ofApp::setup(){
     loaded = false;
 
     showInfo = false;
-    showMetrum = true;
+    showMetrum = false;
 
     tempo = __APP_DEFAULT_BPM;
     pixelsPerSecond = __APP_DEFAULT_PPS;
@@ -63,7 +63,10 @@ void ofApp::draw(){
 
         ofSetColor(255, 255, 255, 255);
         uint32_t buffer = (uint32_t)roundf(ofGetWidth() * 0.3f);
+        ofPushMatrix();
+        ofTranslate(buffer, 0.0);
         score.draw((uint32_t) roundf(pixelsPerSecond * minutes * 60.f), 0, ofGetWidth(), score.height);
+        ofPopMatrix();
 
         ofSetColor(255, 0, 0);
         ofDrawRectangle(buffer, 0, 5, ofGetHeight());
@@ -75,13 +78,14 @@ void ofApp::draw(){
 
         ofFill();
         ofSetColor(0, 0, 0, 128);
-        ofDrawRectangle(30, ofGetHeight() - 60, 420, 30);
+        ofDrawRectangle(30, ofGetHeight() - 60, 560, 30);
 
         ofSetColor(255, 255, 255, 255);
         ofDrawBitmapString("BPM " + ofToString(tempo, 2, 5, '0'), 40, ofGetHeight() - 40);
         ofDrawBitmapString("SIG 4 / 4", 160, ofGetHeight() - 40);
-        ofDrawBitmapString("PPS " + ofToString(pixelsPerSecond, 0), 280, ofGetHeight() - 40);
-        ofDrawBitmapString(__APP_VERSION__, 400, ofGetHeight() - 40);
+        ofDrawBitmapString("PPS " + ofToString(pixelsPerSecond, 2), 280, ofGetHeight() - 40);
+        ofDrawBitmapString("FPS " + ofToString(ofGetFrameRate(), 2), 400, ofGetHeight() - 40);
+        ofDrawBitmapString(__APP_VERSION__, 520, ofGetHeight() - 40);
 
         ofSetColor(0, 0, 0, 128);
         ofDrawRectangle(ofGetWidth() - 300, ofGetHeight() - 60, 80, 30);
@@ -93,7 +97,7 @@ void ofApp::draw(){
         ofPopStyle();
     }
 
-    if (playing && showMetrum) {
+    if (playing && connected && showMetrum) {
         ofPushStyle();
 
         ofFill();
@@ -115,13 +119,14 @@ void ofApp::draw(){
 
         ofFill();
         ofSetColor(0, 0, 0, 128);
-        ofDrawRectangle(30, ofGetHeight() - 250, 240, 115);
+        ofDrawRectangle(30, ofGetHeight() - 270, 280, 130);
 
         ofSetColor(255, 255, 255, 255);
-        ofDrawBitmapString("L .... LOAD SCORE", 40, ofGetHeight() - 230);
-        ofDrawBitmapString("F .... TOGGLE FULLSCREEN", 40, ofGetHeight() - 190);
-        ofDrawBitmapString("I .... TOGGLE INFO", 40, ofGetHeight() - 170);
-        ofDrawBitmapString("M .... TOGGLE METRUM", 40, ofGetHeight() - 150);
+        ofDrawBitmapString("L ...... LOAD SCORE", 40, ofGetHeight() - 250);
+        ofDrawBitmapString("F ...... TOGGLE FULLSCREEN", 40, ofGetHeight() - 230);
+        ofDrawBitmapString("I ...... TOGGLE INFO", 40, ofGetHeight() - 190);
+        ofDrawBitmapString("M ...... TOGGLE METRUM", 40, ofGetHeight() - 170);
+        ofDrawBitmapString("SPACE .. MANUAL PLAY FROM START", 40, ofGetHeight() - 150);
 
         ofPopStyle();
     }
@@ -167,7 +172,10 @@ void ofApp::keyPressed(int key){
 void ofApp::keyReleased(int key) {
     switch (key) {
         case ' ':
-            /* play */
+            playing = true;
+            time = 0.0;
+            clock_micros = (uint64_t) (time * 1000000.f);
+            clock_micros_ref = ofGetElapsedTimeMicros();
             break;
         default:
             break;

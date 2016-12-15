@@ -7,7 +7,7 @@
 #define __APP_VERSION__ "0.1.0"
 #define __APP_DEFAULT_FILENAME "score.jpg"
 #define __APP_DEFAULT_BPM 120
-#define __APP_DEFAULT_PPS 29.23333333333333
+#define __APP_DEFAULT_PPS 29.23333333333333f
 
 #define __OSC_IP_INPUT "127.0.0.1"
 #define __OSC_PORT_INPUT 4000
