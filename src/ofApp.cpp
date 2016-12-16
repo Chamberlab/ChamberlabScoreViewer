@@ -20,14 +20,16 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    while (input.hasWaitingMessages()) {
-        ofxOscMessage msg;
-        input.getNextMessage(msg);
-
+    if (playing) {
         uint64_t now_micros = ofGetElapsedTimeMicros();
         uint64_t diff_micros = now_micros - clock_micros_ref;
         clock_micros += diff_micros;
         clock_micros_ref = now_micros;
+    }
+
+    while (input.hasWaitingMessages()) {
+        ofxOscMessage msg;
+        input.getNextMessage(msg);
 
         if (msg.getAddress() == __OSC_ADDR_CONNECT) {
             connected = true;
