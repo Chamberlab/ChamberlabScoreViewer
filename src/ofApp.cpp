@@ -85,9 +85,9 @@ void ofApp::draw() {
         uint32_t buffer = (uint32_t)roundf(ofGetWidth() * 0.3f);
         ofPushMatrix();
         ofTranslate(buffer, 0.0);
-        scores[scoreIndex].img.draw(
-            (uint32_t) roundf(scores[scoreIndex].pps * minutes * 60.f), 0,
-            ofGetWidth() - buffer, scores[scoreIndex].img.height
+        scores[options.getValue("score-index", 0)].img.draw(
+            (uint32_t) roundf(scores[options.getValue("score-index", 0)].pps * minutes * 60.f), 0,
+            ofGetWidth() - buffer, scores[options.getValue("score-index", 0)].img.height
         );
         ofPopMatrix();
 
@@ -101,6 +101,7 @@ void ofApp::draw() {
     if (options.getValue("show-menu", __APP_DEFAULT_SHOW_MENU)) drawMenu();
 }
 
+//--------------------------------------------------------------
 void ofApp::drawInfo() {
     float minutes = (clock_micros * 0.000001f) / tempo;
 
@@ -113,7 +114,7 @@ void ofApp::drawInfo() {
     ofSetColor(255, 255, 255, 255);
     ofDrawBitmapString("BPM " + ofToString(tempo, 2, 5, '0'), 40, ofGetHeight() - 40);
     ofDrawBitmapString("SIG 4 / 4", 160, ofGetHeight() - 40);
-    ofDrawBitmapString("PPS " + ofToString(scores[scoreIndex].pps, 2), 280, ofGetHeight() - 40);
+    ofDrawBitmapString("PPS " + ofToString(scores[options.getValue("score-index", 0)].pps, 2), 280, ofGetHeight() - 40);
     ofDrawBitmapString("FPS " + ofToString(ofGetFrameRate(), 2), 400, ofGetHeight() - 40);
     ofDrawBitmapString("SCORE #" + ofToString(options.getValue("score-index", 0)), 520, ofGetHeight() - 40);
     ofDrawBitmapString(__APP_VERSION__, 640, ofGetHeight() - 40);
@@ -135,6 +136,7 @@ void ofApp::drawInfo() {
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::drawMenu() {
     ofPushStyle();
 
@@ -154,6 +156,7 @@ void ofApp::drawMenu() {
     ofPopStyle();
 }
 
+//--------------------------------------------------------------
 void ofApp::drawMetrum() {
     ofPushStyle();
 
@@ -171,6 +174,7 @@ void ofApp::drawMetrum() {
     ofPopStyle();
 }
 
+//--------------------------------------------------------------
 void ofApp::setClock(float seconds) {
     time = seconds;
     clock_micros = (uint64_t) (time * 1000000.f);
