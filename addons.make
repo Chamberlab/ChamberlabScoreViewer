@@ -1,2 +1,3 @@
 ofxGiantImage
 ofxOsc
+ofxXmlSettings

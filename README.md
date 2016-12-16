@@ -9,13 +9,15 @@ A horizontal scrolling viewer synced to Ableton Live via the [ChamberBridge](htt
 
 ## Usage
 
-Put your a score graphic in JPEG format inside the ``bin/`` folder (the folder must be right next to the app) and name it ``score.jpg``.
+Put your a score graphic(s) in JPEG format inside the ``bin/`` folder (the folder must be right next to the app). Then edit the file ``bin/keys.xml`` as follows: The tags ``<key-0>`` specifies the filename to be loaded for key ``0`` and ``<key-0-pps>`` declares the resolution in pixels per second. You can set up keys 0-9 with this system.
 
-Start the app and press 'L' to load the score graphic. The score is displayed without zoom from left to right and top to bottom (e.g. if your screen is 1920x1080 then your score could be 20000x1080).
+Start the app and press the number of the score you'd like to load. The score is displayed without zoom from left to right and top to bottom (e.g. if your screen is 1920x1080 then your score could be 20000x1080).
 
-You can show detailed infg by pressing 'I' and change the PPS (pixels per second) mapping of time in Ableton Live and the pixels of your score document.
+You can show detailed infg by pressing 'i', toggle fullscreen by pressing 'f' and toggle the metrum (only available when connected to Live) by pressing 'm'.
 
-Toggle fullscreen by pressing 'F', hide and show the metrum by pressing 'M'.
+Press 'Space' to play the score without being connected to Live.
+
+Exit the app with 'Esc'. **Important:** On the first run you need to exit using 'Esc' to create the file ``bin/keys.xml``.
  
 ## Issues
 
