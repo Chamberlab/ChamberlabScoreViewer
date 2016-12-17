@@ -82,17 +82,17 @@ void ofApp::draw() {
         ofPushStyle();
 
         ofSetColor(255, 255, 255, 255);
-        uint32_t buffer = (uint32_t)roundf(ofGetWidth() * 0.3f);
+        //uint32_t buffer = (uint32_t)roundf(__APP_DEFAULT_BUFFER);
         ofPushMatrix();
-        ofTranslate(buffer, 0.0);
+        //ofTranslate(buffer, 0.0);
         scores[options.getValue("score-index", 0)].img.draw(
             (uint32_t) roundf(scores[options.getValue("score-index", 0)].pps * minutes * 60.f), 0,
-            ofGetWidth() - buffer, scores[options.getValue("score-index", 0)].img.height
+            ofGetWidth(), scores[options.getValue("score-index", 0)].img.height
         );
         ofPopMatrix();
 
         ofSetColor(255, 0, 0);
-        ofDrawRectangle(buffer, 0, 5, ofGetHeight());
+        ofDrawRectangle(__APP_DEFAULT_BUFFER, 0, 5, ofGetHeight());
         ofPopStyle();
     }
 

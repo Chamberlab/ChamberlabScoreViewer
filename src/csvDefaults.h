@@ -8,7 +8,8 @@
 #define __APP_VERSION__ "0.1.0"
 #define __APP_DEFAULT_FILENAME "score.jpg"
 #define __APP_DEFAULT_BPM 120
-#define __APP_DEFAULT_PPS 100.0f
+#define __APP_DEFAULT_PPS 60.0f
+#define __APP_DEFAULT_BUFFER 1920.0f / 3.0f
 
 #define __APP_DEFAULT_SHOW_INFO true
 #define __APP_DEFAULT_SHOW_METRUM true
