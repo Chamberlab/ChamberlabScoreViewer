@@ -214,6 +214,7 @@ void ofApp::keyReleased(int key) {
     switch (key) {
         case ' ':
             playing = !playing;
+        default:
             if (playing) {
                 ofHideCursor();
                 setClock(time);
@@ -221,7 +222,6 @@ void ofApp::keyReleased(int key) {
                 ofShowCursor();
             }
             break;
-        default:
             break;
     }
 }
